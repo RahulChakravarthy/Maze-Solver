@@ -3,8 +3,7 @@ class Node:
     __y_position = None
 
     def __init__(self):
-        self.__x_position = 0
-        self.__y_position = 0
+        return
 
     def __init__(self, x, y):
         self.__x_position = x

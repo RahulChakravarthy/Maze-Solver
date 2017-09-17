@@ -1,10 +1,11 @@
-import string
 import os
+import string
 import sys
-from pprint import pprint
-from nodes import Node
 
+import numpy
 from PIL import Image
+
+from mazes import Maze
 
 '''
 Maze Solver
@@ -16,7 +17,7 @@ Rahul Chakravarthy
 # @Method check_arg_values : checks and cleans command line input arguments
 # @return boolean
 def check_arg_values():
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 3:
         print("Too many or no arguments input error")
         exit(-1)
     else:
@@ -37,28 +38,17 @@ def parse_image_directory(directory_path=string):
 
 # @Method parse_image : parses each image in images directory
 # @param image_path : string path to png file
-# @return : return a 2D array of RGB values corresponding to
+# @return : return a Maze object
 def parse_image(image_path):
-    image = Image.open(image_path).convert('L')  # Convert image to greyscale
+    try:
+        image = Image.open(image_path).convert('L')  # Convert image to greyscale
+    except OSError:
+        print("Image: " + os.path.basename(image_path) + " is in an incorrect file form... skipping...")
+        return -1
+
     WIDTH, HEIGHT = image.size
-    data = list(image.getData())
-    data = [data[offset:offset + WIDTH] for offset in range(0, WIDTH * HEIGHT, WIDTH)]
-
-    # FOR DEBUGGING
-    # for y in range(HEIGHT):
-    #     row = (data[y][x] for x in range(WIDTH))
-    #     print(' '.join('{:3}'.format(value) for value in row))
-    return data
-
-
-# @Method parse_image : parses each image in images directory
-# @param image_path : string path to png file
-# @return : return a 2D array of RGB values corresponding to
-def create_maze_nodes(maze_as_pixel_array):
-    # Iterate through the pixel array and create nodes when parameters have been met
-    node_list = []
-    node_list.append(Node())
-    return node_list
+    data_pixels = numpy.array(image)
+    return Maze(HEIGHT, WIDTH, data_pixels, image)
 
 
 # @Method breadth_first_search : solves maze using breadth first search algorithm
@@ -79,8 +69,12 @@ def depth_first_search(maze_as_pixel_array, node_list):
 def main():
     check_arg_values()
     for image_path in parse_image_directory(sys.argv[1]):
-        maze_as_pixel_array = parse_image(str(os.path.abspath(image_path)))
-        nodes = create_maze_nodes(maze_as_pixel_array)
+        maze = parse_image(sys.argv[1] + image_path)
+        if maze == -1:
+            continue
+        maze.write__newImage(sys.argv[2] + image_path)
+        # breadth_first_search(maze)
+        # depth_first_search(maze)
 
 
 # Main Program Execution
