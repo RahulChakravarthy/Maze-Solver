@@ -21,6 +21,7 @@
         <list>
           <option value="Mazes.Maze.__pixel_array" />
           <option value="Mazes.Maze.__write__newImage" />
+          <option value="nodes.Node" />
         </list>
       </option>
     </inspection_tool>

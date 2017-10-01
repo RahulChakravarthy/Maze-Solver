@@ -4,7 +4,6 @@ import sys
 
 import numpy
 from PIL import Image
-
 from mazes import Maze
 
 '''
@@ -41,7 +40,7 @@ def parse_image_directory(directory_path=string):
 # @return : return a Maze object
 def parse_image(image_path):
     try:
-        image = Image.open(image_path).convert('L')  # Convert image to greyscale
+        image = Image.open(image_path).convert('RGB')  # Convert image to greyscale
     except OSError:
         print("Image: " + os.path.basename(image_path) + " is in an incorrect file form... skipping...")
         return -1
@@ -54,14 +53,16 @@ def parse_image(image_path):
 # @Method breadth_first_search : solves maze using breadth first search algorithm
 # @param maze_as_pixel_array : the maze as a 2D array
 # @param node_list : list of all nodes of interest in the maze
-def breadth_first_search(maze_as_pixel_array, node_list):
+def breadth_first_search(maze = Maze):
+    maze.breadth_first_search()
     return
 
 
 # @Method depth_first_search : solves maze using depth first search algorithm
 # @param maze_as_pixel_array : the maze as a 2D array
 # @param node_list : list of all nodes of interest in the maze
-def depth_first_search(maze_as_pixel_array, node_list):
+def depth_first_search(maze = Maze):
+    maze.depth_first_search()
     return
 
 
